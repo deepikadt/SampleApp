@@ -1,21 +1,13 @@
-import 'dart:math' as math;
-
 List<String> calculatePrime(double n) {
   List<String> primefactorList = [];
-
-  while (n % 2 == 0) {
-    primefactorList.add("2");
-    n /= 2;
+  for (int i = 2; i <= n; i++) {
+    if (checkPrime(i)) primefactorList.add(i.toString());
   }
-
-  for (int i = 3; i <= math.sqrt(n); i += 2) {
-    while (n % i == 0) {
-      primefactorList.add(i.truncate().toString());
-      n /= i;
-    }
-  }
-
-  if (n > 2) primefactorList.add(n.truncate().toString());
-
   return primefactorList;
+}
+
+bool checkPrime(int n) {
+  if (n <= 1) return false;
+  for (int i = 2; i < n; i++) if (n % i == 0) return false;
+  return true;
 }

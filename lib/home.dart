@@ -11,6 +11,7 @@ class _HomeState extends State<Home> {
   TextEditingController _textEditingController;
   FocusNode _textFocusNode;
   List<String> _primefactorList = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -23,6 +24,7 @@ class _HomeState extends State<Home> {
     dynamic primeFactors = await compute(calculatePrime, n);
     setState(() {
       _primefactorList.addAll(primeFactors);
+      _isLoading = false;
     });
   }
 
@@ -52,9 +54,13 @@ class _HomeState extends State<Home> {
                     child: RaisedButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();
-                    if (_textEditingController.text != "")
+                    if (_textEditingController.text != "") {
+                      setState(() {
+                        _isLoading = true;
+                      });
                       _calculatePrimeFactor(
                           double.parse(_textEditingController.text));
+                    }
                   },
                   child: Text("Submit", style: TextStyle(color: Colors.white)),
                   color: Colors.blue,
@@ -73,14 +79,16 @@ class _HomeState extends State<Home> {
               ],
             ),
             Expanded(
-              child: ListView.builder(
-                  padding: EdgeInsets.fromLTRB(40, 30, 30, 0),
-                  itemCount: _primefactorList?.length ?? 0,
-                  itemBuilder: (_, index) {
-                    return Text(_primefactorList[index],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20));
-                  }),
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      padding: EdgeInsets.fromLTRB(40, 30, 30, 0),
+                      itemCount: _primefactorList?.length ?? 0,
+                      itemBuilder: (_, index) {
+                        return Text(_primefactorList[index],
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20));
+                      }),
             ),
           ],
         ));
