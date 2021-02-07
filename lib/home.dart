@@ -10,7 +10,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TextEditingController _textEditingController;
   FocusNode _textFocusNode;
-  bool _loading = false;
   List<String> _primefactorList = [];
 
   @override
@@ -74,18 +73,14 @@ class _HomeState extends State<Home> {
               ],
             ),
             Expanded(
-              child: _loading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
-                      padding: EdgeInsets.fromLTRB(40, 30, 30, 0),
-                      itemCount: _primefactorList?.length ?? 0,
-                      itemBuilder: (_, index) {
-                        return Text(_primefactorList[index],
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20));
-                      }),
+              child: ListView.builder(
+                  padding: EdgeInsets.fromLTRB(40, 30, 30, 0),
+                  itemCount: _primefactorList?.length ?? 0,
+                  itemBuilder: (_, index) {
+                    return Text(_primefactorList[index],
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20));
+                  }),
             ),
           ],
         ));
